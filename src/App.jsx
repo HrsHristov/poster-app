@@ -4,7 +4,6 @@ function App() {
     return (
         <main>
             <Post author="Hristo" body="React.js" />
-            <Post />
         </main>
     );
 }
