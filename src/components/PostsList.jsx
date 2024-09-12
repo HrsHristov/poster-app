@@ -1,38 +1,32 @@
-import { useState } from "react";
+import { useLoaderData } from "react-router-dom";
 
-import NewPost from "./NewPost";
 import Post from "./Post";
-import Modal from "./Modal";
-
 import classes from "./PostsList.module.css";
 
-const PostsList = ({ isPosting, onStopPosting }) => {
-    const [enteredBody, setEnteredBody] = useState("");
-    const [enteredAuthor, setenteredAuthor] = useState("");
-
-    const bodyChangeHandler = (event) => {
-        setEnteredBody(event.target.value);
-    };
-
-    const authorChangeHandler = (event) => {
-        setenteredAuthor(event.target.value);
-    };
+const PostsList = () => {
+    const posts = useLoaderData();
 
     return (
         <>
-            {isPosting && (
-                <Modal onClose={onStopPosting}>
-                    <NewPost
-                        onBodyChange={bodyChangeHandler}
-                        onAuthorChange={authorChangeHandler}
-                        onCancel={onStopPosting}
-                    />
-                </Modal>
+            {posts.length > 0 && (
+                <ul className={classes.posts}>
+                    {posts.map((post) => (
+                        <Post
+                            key={post.id}
+                            id={post.id}
+                            author={post.author}
+                            body={post.body}
+                        />
+                    ))}
+                </ul>
             )}
-            <ul className={classes.posts}>
-                <Post author={enteredAuthor} body={enteredBody} />
-                <Post author="Icaka" body="Next.js up ahead" />
-            </ul>
+
+            {posts.length === 0 && (
+                <div style={{ textAlign: "center", color: "white" }}>
+                    <h2>There are no posts yet.</h2>
+                    <p>Start adding some!</p>
+                </div>
+            )}
         </>
     );
 };
